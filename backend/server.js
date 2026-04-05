@@ -39,7 +39,7 @@ mongoose
   .catch((error) => {
     console.error('MongoDB connection failed:', error.message);
     process.exit(1);
-  });d
+  });
 
 app.use(express.static(path.join(__dirname, "frontend/build")));
 
