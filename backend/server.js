@@ -15,6 +15,7 @@ app.use(cors({ origin: true }));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/properties', propertiesRoutes);
 app.use('/api/bookings', bookingsRoutes);
@@ -24,6 +25,15 @@ app.get('/api', (req, res) => {
   res.json({ message: 'StayMate backend is running' });
 });
 
+// Serve frontend (Vite build)
+app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+// React routing fallback
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
+});
+
+// MongoDB connection + server start
 const MONGO_URI = process.env.MONGO_URI;
 const PORT = process.env.PORT || 8080;
 
@@ -40,12 +50,3 @@ mongoose
     console.error('MongoDB connection failed:', error.message);
     process.exit(1);
   });
-
-app.use(express.static(path.join(__dirname, "../frontend/dist")));
-
-// React routing fix
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
-});
-
-// PORT
