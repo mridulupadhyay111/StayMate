@@ -24,7 +24,7 @@ app.get('/api', (req, res) => {
   res.json({ message: 'StayMate backend is running' });
 });
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/staymate';
+const MONGO_URI = process.env.MONGO_URI;
 const PORT = process.env.PORT || 8080;
 
 mongoose
