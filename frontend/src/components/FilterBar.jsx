@@ -1,16 +1,16 @@
-const FilterBar = ({ filters, setFilters }) => {
-  const handleChange = (key, value) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
+const FilterBar = ({ filters, setFilters }) => {// Function to handle changes in filter inputs
+  const handleChange = (key, value) => {// Update the specific filter value
+    setFilters((prev) => ({ ...prev, [key]: value }));// Update filters state in parent component
   };
 
   return (
     <div className="grid gap-3 rounded-3xl border border-slate-800 bg-slate-900/95 p-5 shadow-soft sm:grid-cols-5">
       <input
         type="text"
-        value={filters.search}
-        onChange={(e) => handleChange('search', e.target.value)}
+        value={filters.search}// Update search filter on input change
+        onChange={(e) => handleChange('search', e.target.value)}// Update search filter on input change
         placeholder="Search by name or keyword"
-        className="col-span-2"
+        className="col-span-2" // Make search input span 2 columns for more space
       />
       <input
         type="text"
