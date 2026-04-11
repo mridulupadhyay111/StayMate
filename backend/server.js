@@ -20,18 +20,20 @@ app.use('/api/auth', authRoutes);
 app.use('/api/properties', propertiesRoutes);
 app.use('/api/bookings', bookingsRoutes);
 app.use('/api/owners', ownersRoutes);
+app.use("/api/listings", listingRoutes);
+app.use("/api/users", userRoutes);
 
 app.get('/api', (req, res) => {
   res.json({ message: 'StayMate backend is running' });
 });
 
 // Serve frontend (Vite build)
-app.use(express.static(path.join(__dirname, "../frontend/dist")));
+/*app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
 // React routing fallback
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
-});
+});*/
 
 // MongoDB connection + server start
 const MONGO_URI = process.env.MONGO_URI;
