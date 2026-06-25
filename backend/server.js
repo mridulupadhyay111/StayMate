@@ -7,7 +7,7 @@ const authRoutes = require('./routes/auth');
 const propertiesRoutes = require('./routes/properties');
 const bookingsRoutes = require('./routes/bookings');
 const ownersRoutes = require('./routes/owners');
-
+const listingRoutes = require("./routes/listingRoutes");
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const app = express();
@@ -20,8 +20,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/properties', propertiesRoutes);
 app.use('/api/bookings', bookingsRoutes);
 app.use('/api/owners', ownersRoutes);
-app.use("/api/listings", listingRoutes);
-app.use("/api/users", userRoutes);
+//app.use("/api/listings", listingRoutes);
+//app.use("/api/users", userRoutes);
 
 app.get('/api', (req, res) => {
   res.json({ message: 'StayMate backend is running' });
