@@ -7,7 +7,7 @@ const authRoutes = require('./routes/auth');
 const propertiesRoutes = require('./routes/properties');
 const bookingsRoutes = require('./routes/bookings');
 const ownersRoutes = require('./routes/owners');
-const listingRoutes = require("./routes/listingRoutes");
+//const listingRoutes = require("./routes/listingRoutes");
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 const app = express();
