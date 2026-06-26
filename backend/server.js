@@ -1,14 +1,22 @@
+
+require('dotenv').config();console.log("ENV CHECK:", {
+  key: process.env.RAZORPAY_KEY_ID,
+  secret: process.env.RAZORPAY_KEY_SECRET
+});
+
+const fs = require('fs');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const path = require('path');
-const dotenv = require('dotenv');
+
 const authRoutes = require('./routes/auth');
 const propertiesRoutes = require('./routes/properties');
 const bookingsRoutes = require('./routes/bookings');
 const ownersRoutes = require('./routes/owners');
-//const listingRoutes = require("./routes/listingRoutes");
-dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+require('dotenv').config({ path: path.join(__dirname, '.env') });
+console.log("FILE EXISTS:", fs.existsSync(path.join(__dirname, '.env')));
 
 const app = express();
 app.use(cors({ origin: true }));
