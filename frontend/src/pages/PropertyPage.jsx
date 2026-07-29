@@ -88,7 +88,7 @@ const PropertyPage = () => {
     );
   }
 
-  const backendBaseUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080';
+  const backendBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
   const imageUrl = property.image.startsWith('http://localhost:5000')
     ? property.image.replace('http://localhost:5000', backendBaseUrl)
     : property.image.startsWith('https://localhost:5000')
