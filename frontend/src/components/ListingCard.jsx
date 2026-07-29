@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 
-const backendBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080';
+const backendBaseUrl =
+  import.meta.env.VITE_API_URL?.replace('/api', '') ||
+  'https://staymate-1-xg47.onrender.com';
 const getImageUrl = (image) => {
   if (!image) return 'https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&w=1200&q=80';
   if (image.startsWith('http://localhost:5000')) return image.replace('http://localhost:5000', backendBaseUrl);
