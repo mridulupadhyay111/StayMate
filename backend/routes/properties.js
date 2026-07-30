@@ -8,21 +8,16 @@ const router = express.Router();
 
 /* ================= MULTER CONFIG ================= */
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');
-  },
-  filename: (req, file, cb) => {
-    const uniqueName =
-      Date.now() +
-      '-' +
-      Math.round(Math.random() * 1e9) +
-      path.extname(file.originalname);
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
 
-    cb(null, uniqueName);
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "staymate",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
   },
 });
-
 const fileFilter = (req, file, cb) => {
   const allowed = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
 
@@ -146,7 +141,7 @@ router.post(
         location,
         contactNumber,
 
-        image: '/uploads/' + req.file.filename,
+        image: req.file.path,
 
         nearbyColleges: nearbyColleges
           ? nearbyColleges.split(',').map(i => i.trim()).filter(Boolean)
