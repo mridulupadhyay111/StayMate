@@ -97,7 +97,9 @@ const OwnerDashboard = () => {
         ) : (
           <div className="grid gap-6 xl:grid-cols-3 lg:grid-cols-2">
             {listings.map((property) => {
-              const backendBaseUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080';
+              const backendBaseUrl =
+  import.meta.env.VITE_API_URL?.replace('/api', '') ||
+  'https://staymate-1-xg47.onrender.com';
               const imageUrl = property.image.startsWith('http://localhost:5000')
                 ? property.image.replace('http://localhost:5000', backendBaseUrl)
                 : property.image.startsWith('https://localhost:5000')

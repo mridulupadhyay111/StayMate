@@ -36,7 +36,9 @@ const EditListingPage = () => {
           contactNumber: property.contactNumber || '',
           nearbyColleges: property.nearbyColleges?.join(', ') || '',
         });
-        const backendBaseUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080';
+        const backendBaseUrl =
+  import.meta.env.VITE_API_URL?.replace('/api', '') ||
+  'https://staymate-1-xg47.onrender.com';
         setCurrentImage(
           property.image.startsWith('http://localhost:5000')
             ? property.image.replace('http://localhost:5000', backendBaseUrl)
