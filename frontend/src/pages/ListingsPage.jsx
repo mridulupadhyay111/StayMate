@@ -4,15 +4,17 @@ import api from '../services/api';
 import FilterBar from '../components/FilterBar';
 import ListingCard from '../components/ListingCard';
 
+const getFiltersFromParams = (params) => ({
+  type: params.get('type') || '',
+  sharing: params.get('sharing') || '',
+  college: params.get('college') || '',
+  location: params.get('location') || '',
+  search: params.get('search') || '',
+});
+
 const ListingsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [filters, setFilters] = useState({
-    type: searchParams.get('type') || '',
-    sharing: searchParams.get('sharing') || '',
-    college: searchParams.get('college') || '',
-    location: searchParams.get('location') || '',
-    search: searchParams.get('search') || '',
-  });
+  const [filters, setFilters] = useState(() => getFiltersFromParams(searchParams));
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -30,6 +32,13 @@ const ListingsPage = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    setFilters((prev) => {
+      const nextFilters = getFiltersFromParams(searchParams);
+      return JSON.stringify(prev) === JSON.stringify(nextFilters) ? prev : nextFilters;
+    });
+  }, [searchParams]);
 
   useEffect(() => {
     cargar();

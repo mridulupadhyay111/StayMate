@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const categories = [
   {
@@ -24,6 +25,33 @@ const categories = [
 ];
 
 export default function HomePage() {
+  const navigate = useNavigate();
+  const [searchForm, setSearchForm] = useState({
+    college: "",
+    location: "",
+    type: "",
+  });
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    const params = new URLSearchParams();
+
+    if (searchForm.college.trim()) {
+      params.set("college", searchForm.college.trim());
+    }
+
+    if (searchForm.location.trim()) {
+      params.set("location", searchForm.location.trim());
+    }
+
+    if (searchForm.type) {
+      params.set("type", searchForm.type);
+    }
+
+    navigate(`/listings${params.toString() ? `?${params.toString()}` : ""}`);
+  };
+
   return (
     <div className="bg-[#FAFAF8]">
 
@@ -96,25 +124,46 @@ export default function HomePage() {
       {/* SEARCH BAR */}
       <section className="mx-auto max-w-5xl px-6">
         <div className="rounded-3xl bg-white p-4 shadow-lg">
-          <div className="grid gap-4 md:grid-cols-4">
+          <form onSubmit={handleSearch} className="grid gap-4 md:grid-cols-4">
             <input
+              value={searchForm.college}
+              onChange={(e) =>
+                setSearchForm((prev) => ({ ...prev, college: e.target.value }))
+              }
               placeholder="College"
               className="rounded-xl border border-slate-200 px-4 py-3"
             />
 
             <input
+              value={searchForm.location}
+              onChange={(e) =>
+                setSearchForm((prev) => ({ ...prev, location: e.target.value }))
+              }
               placeholder="Location"
               className="rounded-xl border border-slate-200 px-4 py-3"
             />
 
-            <select className="rounded-xl border border-slate-200 px-4 py-3">
-              <option>Property Type</option>
+            <select
+              value={searchForm.type}
+              onChange={(e) =>
+                setSearchForm((prev) => ({ ...prev, type: e.target.value }))
+              }
+              className="rounded-xl border border-slate-200 px-4 py-3"
+            >
+              <option value="">Property Type</option>
+              <option value="PG">PG</option>
+              <option value="Hostel">Hostel</option>
+              <option value="Flat">Flat</option>
+              <option value="Mess">Mess</option>
             </select>
 
-            <button className="rounded-xl bg-orange-500 font-semibold text-white hover:bg-orange-600">
+            <button
+              type="submit"
+              className="rounded-xl bg-orange-500 font-semibold text-white hover:bg-orange-600"
+            >
               Search
             </button>
-          </div>
+          </form>
         </div>
       </section>
 

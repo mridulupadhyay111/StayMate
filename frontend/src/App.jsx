@@ -1,3 +1,4 @@
+console.log("ENV URL =", import.meta.env.VITE_API_URL);
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import HomePage from './pages/HomePage';
