@@ -121,7 +121,7 @@ const Navbar = ({ user }) => {
 
             <Link
               to="/listings"
-              className="block rounded-xl px-4 py-3 text-orange hover:bg-slate-800 hover:text-slate-200"
+              className="block rounded-xl px-4 py-3 text-white hover:bg-slate-800 hover:text-slate-200"
             >
               Listings
             </Link>
@@ -129,7 +129,7 @@ const Navbar = ({ user }) => {
             {user?.role === "owner" && (
               <Link
                 to="/owner/dashboard"
-                className="block rounded-xl px-4 py-3 text-orange hover:bg-slate-800 hover:text-slate-200"
+                className="block rounded-xl px-4 py-3 text-white hover:bg-slate-800 hover:text-slate-200"
               >
                 Dashboard
               </Link>
