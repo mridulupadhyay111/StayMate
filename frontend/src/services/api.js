@@ -1,8 +1,13 @@
 import axios from 'axios';
 
+const apiBaseUrl =
+  import.meta.env.VITE_API_URL ||
+  'http://localhost:8080/api';
+
 const api = axios.create({
-  baseURL: "https://staymate-1-xg47.onrender.com/api",
+  baseURL: apiBaseUrl,
 });
+
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('staymate_token');
 
@@ -12,5 +17,6 @@ api.interceptors.request.use((config) => {
 
   return config;
 });
-console.log("API BASE URL =", "https://staymate-1-xg47.onrender.com/api");
+
+console.log('API BASE URL =', apiBaseUrl);
 export default api;

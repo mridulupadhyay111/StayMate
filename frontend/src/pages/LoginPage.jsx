@@ -1,81 +1,148 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import api from '../services/api';
-import { saveAuth } from '../utils/auth';
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import api from "../services/api";
+import { saveAuth } from "../utils/auth";
 
 const LoginPage = () => {
-  const [form, setForm] = useState({ email: '', password: '' });
-  const [error, setError] = useState('');
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     try {
-      const response = await api.post('/auth/login', form);
+      const response = await api.post("/auth/login", form);
+
       saveAuth(response.data.token, response.data.user);
-      navigate('/listings');
+
+      navigate("/listings");
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
+      setError(err.response?.data?.message || "Login failed");
     }
   };
 
-  return (
-    <div className="mx-auto max-w-4xl space-y-10 rounded-[2rem] bg-slate-950/90 p-8 shadow-soft border border-slate-800">
-      <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr] lg:items-center">
-        <div className="space-y-5">
-          <p className="text-sm uppercase tracking-[0.35em] text-cyan-400">Welcome back</p>
-          <h1 className="text-4xl font-bold text-white">Login and get closer to safe, student-friendly homes.</h1>
-          <p className="text-slate-400">Sign in with your student or owner account and experience animated comfort with every step.</p>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="rounded-3xl bg-slate-900/90 p-5 text-slate-300 shadow-soft animate-float">
-              <p className="text-sm text-cyan-300">Students</p>
-              <p className="mt-2 text-lg font-semibold text-white">Browse PGs & Mess</p>
-            </div>
-            <div className="rounded-3xl bg-slate-900/90 p-5 text-slate-300 shadow-soft animate-float">
-              <p className="text-sm text-cyan-300">Owners</p>
-              <p className="mt-2 text-lg font-semibold text-white">Manage listings with ease</p>
-            </div>
-          </div>
+  
+    return (
+  <div className="min-h-screen bg-gradient-to-b from-white to-slate-100 flex items-center justify-center px-4">
+
+    <div className="grid w-full max-w-6xl overflow-hidden rounded-[32px] bg-white shadow-2xl lg:grid-cols-2">
+
+      {/* Left Side */}
+      <div className="hidden lg:block relative">
+        <img
+          src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267"
+          alt="StayMate"
+          className="h-full w-full object-cover"
+        />
+
+        <div className="absolute inset-0 bg-black/30" />
+
+        <div className="absolute bottom-10 left-10 text-white">
+          <h2 className="text-4xl font-bold">
+            Find Your Perfect Stay
+          </h2>
+
+          <p className="mt-3 max-w-sm text-lg text-white/90">
+            Trusted PGs, Hostels, Flats and Mess Facilities near your college.
+          </p>
         </div>
-        <div className="rounded-[2rem] border border-slate-800 bg-slate-900/95 p-8 shadow-soft">
-          <h2 className="text-2xl font-bold text-white">Secure login</h2>
-          <p className="mt-2 text-slate-400">Enter your credentials and continue toward your next safe stay.</p>
-          <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+      </div>
+
+      {/* Right Side */}
+      <div className="flex items-center justify-center p-10">
+
+        <div className="w-full max-w-md">
+
+          <div className="mb-10">
+            <h1 className="text-4xl font-bold text-slate-900">
+              Welcome Back 👋
+            </h1>
+
+            <p className="mt-3 text-slate-500">
+              Login to continue your StayMate journey.
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+
             <div>
-              <label className="text-sm text-slate-300">Email</label>
+              <label className="mb-2 block text-sm font-medium text-slate-700">
+                Email
+              </label>
+
               <input
                 type="email"
                 required
                 value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="mt-2 w-full rounded-3xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
-                placeholder="you@example.com"
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    email: e.target.value,
+                  })
+                }
+                className="w-full rounded-2xl border border-slate-300 px-4 py-4 outline-none transition focus:border-blue-600"
+                placeholder="Enter your email"
               />
             </div>
+
             <div>
-              <label className="text-sm text-slate-300">Password</label>
+              <label className="mb-2 block text-sm font-medium text-slate-700">
+                Password
+              </label>
+
               <input
                 type="password"
                 required
                 value={form.password}
-                onChange={(e) => setForm({ ...form, password: e.target.value })}
-                className="mt-2 w-full rounded-3xl border border-slate-700 bg-slate-950 px-4 py-3 text-slate-100 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    password: e.target.value,
+                  })
+                }
+                className="w-full rounded-2xl border border-slate-300 px-4 py-4 outline-none transition focus:border-blue-600"
                 placeholder="Enter your password"
               />
             </div>
-            {error && <p className="text-sm text-rose-400">{error}</p>}
-            <button className="w-full rounded-full bg-cyan-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:-translate-y-0.5 hover:bg-cyan-400">
+
+            {error && (
+              <div className="rounded-xl bg-red-50 p-3 text-red-600">
+                {error}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              className="w-full rounded-2xl bg-blue-600 py-4 font-semibold text-white transition hover:bg-blue-700"
+            >
               Login
             </button>
+
           </form>
-          <p className="mt-5 text-sm text-slate-400">
-            New here?{' '}
-            <Link to="/signup" className="text-cyan-300 hover:text-cyan-200">Create an account</Link>
+
+          <p className="mt-6 text-center text-slate-500">
+            Don't have an account?{" "}
+            <Link
+              to="/signup"
+              className="font-semibold text-blue-600"
+            >
+              Create Account
+            </Link>
           </p>
+
         </div>
+
       </div>
+
     </div>
-  );
+
+  </div>
+);
 };
 
 export default LoginPage;

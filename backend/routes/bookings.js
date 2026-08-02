@@ -7,19 +7,29 @@ const crypto = require('crypto');
 
 let razorpay = null;
 
+const fallbackKeyId = 'rzp_test_T6B516noR5y5tg';
+const fallbackKeySecret = 'Adx8uhkaVQs3OkNsnyimuEZZ';
+
 const initializeRazorpay = () => {
-  const razorpayKeyId = process.env.RAZORPAY_KEY_ID?.trim();
-  const razorpayKeySecret = process.env.RAZORPAY_KEY_SECRET?.trim();
+  const razorpayKeyId = (process.env.RAZORPAY_KEY_ID || fallbackKeyId).trim();
+  const razorpayKeySecret = (process.env.RAZORPAY_KEY_SECRET || fallbackKeySecret).trim();
 
   if (!razorpayKeyId || !razorpayKeySecret) {
     console.error('Razorpay credentials are not set. Please add RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET to backend/.env.');
     return false;
   }
 
-  razorpay = new Razorpay({
-    key_id: razorpayKeyId,
-    key_secret: razorpayKeySecret,
-  });
+  if (!razorpay) {
+    razorpay = new Razorpay({
+      key_id: razorpayKeyId,
+      key_secret: razorpayKeySecret,
+    });
+  }
+
+  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+    console.warn('Razorpay credentials were missing, so the app used fallback test credentials.');
+  }
+
   return true;
 };
 
@@ -50,7 +60,7 @@ router.post('/create-order', auth, async (req, res) => {
     }
 
     const order = await razorpay.orders.create({
-      amount: Math.round(amount * 100),
+      amount: Math.round(Number(amount) * 100),
       currency: 'INR',
       receipt: `booking_${Date.now()}`,
       notes: {
@@ -82,7 +92,41 @@ router.post('/create-order', auth, async (req, res) => {
     res.status(500).json({
       message: 'Failed to create order',
       error: error?.error?.description || error?.error || error?.message || 'Unknown Razorpay error',
+      details: error?.response?.body || null,
     });
+  }
+});
+
+router.post('/fallback-booking', auth, async (req, res) => {
+  try {
+    const { propertyId, amount } = req.body;
+
+    if (!propertyId || !amount) {
+      return res.status(400).json({ message: 'Property ID and amount are required' });
+    }
+
+    const property = await Property.findById(propertyId);
+    if (!property) {
+      return res.status(404).json({ message: 'Property not found' });
+    }
+
+    const booking = new Booking({
+      property: property._id,
+      user: req.user._id,
+      owner: property.owner,
+      amount: Number(amount),
+      paymentStatus: 'pending',
+      paymentMethod: 'manual',
+      paymentProvider: 'fallback',
+      paymentReference: `FALLBACK-${Date.now()}`,
+      paymentDetails: { note: 'Razorpay unavailable; booking created manually.' },
+    });
+
+    await booking.save();
+
+    res.json({ message: 'Booking request received', booking });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to create fallback booking', error: error.message });
   }
 });
 
