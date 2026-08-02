@@ -82,7 +82,7 @@ const PropertyPage = () => {
                 "/bookings/verify-payment",
                 {
                   propertyId: id,
-                  orderId,
+                  orderId: response.razorpay_order_id || orderId,
                   paymentId: response.razorpay_payment_id,
                   signature: response.razorpay_signature,
                 }
@@ -92,7 +92,11 @@ const PropertyPage = () => {
                 `Booking confirmed! Reference: ${verifyRes.data.booking.paymentReference}`
               );
             } catch (err) {
-              setMessage("Payment verification failed.");
+              const backendError =
+                err.response?.data?.error ||
+                err.response?.data?.message ||
+                err.message;
+              setMessage(`Payment verification failed: ${backendError}`);
             }
           },
 

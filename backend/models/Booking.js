@@ -6,7 +6,7 @@ const bookingSchema = new mongoose.Schema({
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   amount: { type: Number, required: true },
   paymentStatus: { type: String, enum: ['paid', 'pending', 'failed'], default: 'paid' },
-  paymentMethod: { type: String, enum: ['card', 'upi', 'qr'], required: true },
+  paymentMethod: { type: String, enum: ['card', 'upi', 'qr', 'razorpay', 'manual'], required: true },
   paymentProvider: { type: String, required: true },
   paymentReference: { type: String, required: true },
   paymentDetails: { type: Object },

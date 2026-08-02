@@ -10,9 +10,15 @@ let razorpay = null;
 const fallbackKeyId = 'rzp_test_T6B516noR5y5tg';
 const fallbackKeySecret = 'Adx8uhkaVQs3OkNsnyimuEZZ';
 
+const getRazorpayCredentials = () => {
+  const keyId = (process.env.RAZORPAY_KEY_ID || fallbackKeyId).trim();
+  const keySecret = (process.env.RAZORPAY_KEY_SECRET || fallbackKeySecret).trim();
+
+  return { keyId, keySecret };
+};
+
 const initializeRazorpay = () => {
-  const razorpayKeyId = (process.env.RAZORPAY_KEY_ID || fallbackKeyId).trim();
-  const razorpayKeySecret = (process.env.RAZORPAY_KEY_SECRET || fallbackKeySecret).trim();
+  const { keyId: razorpayKeyId, keySecret: razorpayKeySecret } = getRazorpayCredentials();
 
   if (!razorpayKeyId || !razorpayKeySecret) {
     console.error('Razorpay credentials are not set. Please add RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET to backend/.env.');
@@ -141,18 +147,32 @@ router.post('/verify-payment', auth, async (req, res) => {
       return res.status(400).json({ message: 'Missing payment verification details' });
     }
 
+    const secretCandidates = [
+      process.env.RAZORPAY_KEY_SECRET,
+      fallbackKeySecret,
+    ].filter(Boolean).map((value) => value.trim());
+
     const property = await Property.findById(propertyId);
     if (!property) {
       return res.status(404).json({ message: 'Property not found' });
     }
 
-    const signingKey = process.env.RAZORPAY_KEY_SECRET || 'rzp_test_secret_default';
-    const generatedSignature = crypto
-      .createHmac('sha256', signingKey)
-      .update(`${orderId}|${paymentId}`)
-      .digest('hex');
+    const generatedSignature = secretCandidates.find((secret) => {
+      const candidateSignature = crypto
+        .createHmac('sha256', secret)
+        .update(`${orderId}|${paymentId}`)
+        .digest('hex');
 
-    if (generatedSignature !== signature) {
+      return candidateSignature === signature;
+    });
+
+    if (!generatedSignature) {
+      console.error('Razorpay signature verification failed', {
+        orderId,
+        paymentId,
+        signature,
+        secretCandidates,
+      });
       return res.status(400).json({ message: 'Payment verification failed' });
     }
 

@@ -6,10 +6,16 @@ const Navbar = ({ user }) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
+  const handleLogout = () => {
+    logout();
+    setOpen(false);
+    navigate("/");
+  };
+
   return (
     <header className="sticky top-0 z-50 border-b border-blue-100 bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 text-white shadow-lg shadow-blue-950/20">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 md:px-6">
-
+        
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500 text-lg font-bold text-white shadow-md shadow-blue-500/30">
@@ -61,7 +67,7 @@ const Navbar = ({ user }) => {
           )}
         </nav>
 
-        {/* Right Side */}
+        {/* Desktop Right Side */}
         <div className="hidden items-center gap-3 md:flex">
           {!user ? (
             <>
@@ -86,10 +92,7 @@ const Navbar = ({ user }) => {
               </div>
 
               <button
-                onClick={() => {
-                  logout();
-                  navigate("/");
-                }}
+                onClick={handleLogout}
                 className="rounded-xl bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-600"
               >
                 Logout
@@ -101,9 +104,9 @@ const Navbar = ({ user }) => {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setOpen(!open)}
-          className="rounded-xl border border-slate-400/60 bg-white/10 p-2 text-white md:hidden"
+          className="rounded-xl border border-slate-400/60 bg-white/10 px-3 py-2 text-white md:hidden"
         >
-          ☰
+          {open ? "✕" : "☰"}
         </button>
       </div>
 
@@ -112,16 +115,24 @@ const Navbar = ({ user }) => {
         <div className="border-t border-blue-800 bg-slate-900/95 md:hidden">
           <div className="space-y-2 p-4">
 
+            {user && (
+              <div className="rounded-xl bg-slate-800 px-4 py-3 text-white font-medium">
+                {user.name}
+              </div>
+            )}
+
             <Link
               to="/"
-              className="block rounded-xl px-4 py-3 text-white hover:bg-slate-800 hover:text-slate-200"
+              onClick={() => setOpen(false)}
+              className="block rounded-xl px-4 py-3 text-white hover:bg-slate-800"
             >
               Home
             </Link>
 
             <Link
               to="/listings"
-              className="block rounded-xl px-4 py-3 text-white hover:bg-slate-800 hover:text-slate-200"
+              onClick={() => setOpen(false)}
+              className="block rounded-xl px-4 py-3 text-white hover:bg-slate-800"
             >
               Listings
             </Link>
@@ -129,7 +140,8 @@ const Navbar = ({ user }) => {
             {user?.role === "owner" && (
               <Link
                 to="/owner/dashboard"
-                className="block rounded-xl px-4 py-3 text-white hover:bg-slate-800 hover:text-slate-200"
+                onClick={() => setOpen(false)}
+                className="block rounded-xl px-4 py-3 text-white hover:bg-slate-800"
               >
                 Dashboard
               </Link>
@@ -138,7 +150,8 @@ const Navbar = ({ user }) => {
             {user?.role === "user" && (
               <Link
                 to="/bookings"
-                className="block rounded-xl px-4 py-3 text-white hover:bg-slate-800 hover:text-slate-200"
+                onClick={() => setOpen(false)}
+                className="block rounded-xl px-4 py-3 text-white hover:bg-slate-800"
               >
                 My Bookings
               </Link>
@@ -148,13 +161,15 @@ const Navbar = ({ user }) => {
               <>
                 <Link
                   to="/login"
-                  className="block rounded-xl px-4 py-3 text-slate-200 hover:bg-slate-800 hover:text-white"
+                  onClick={() => setOpen(false)}
+                  className="block rounded-xl px-4 py-3 text-slate-200 hover:bg-slate-800"
                 >
                   Login
                 </Link>
 
                 <Link
                   to="/signup"
+                  onClick={() => setOpen(false)}
                   className="block rounded-xl bg-blue-500 px-4 py-3 text-white"
                 >
                   Sign Up
@@ -162,11 +177,8 @@ const Navbar = ({ user }) => {
               </>
             ) : (
               <button
-                onClick={() => {
-                  logout();
-                  navigate("/");
-                }}
-                className="w-full rounded-xl bg-red-500 px-4 py-3 text-left text-white"
+                onClick={handleLogout}
+                className="w-full rounded-xl bg-red-500 px-4 py-3 text-left text-white hover:bg-red-600"
               >
                 Logout
               </button>

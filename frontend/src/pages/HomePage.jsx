@@ -56,7 +56,7 @@ export default function HomePage() {
     <div className="bg-[#FAFAF8]">
 
       {/* HERO */}
-      <section className="mx-auto max-w-7xl px-6 py-16 lg:py-24">
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 lg:py-24">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
 
           <div>
@@ -93,7 +93,7 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="mt-12 flex gap-10">
+            <div className="mt-12 grid grid-cols-3 gap-4 sm:gap-8">
               <div>
                 <h3 className="text-3xl font-bold text-slate-900">500+</h3>
                 <p className="text-slate-500">Listings</p>
@@ -115,14 +115,14 @@ export default function HomePage() {
             <img
               src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1400"
               alt="Student Housing"
-              className="h-[550px] w-full rounded-3xl object-cover shadow-xl"
+              className="h-64 sm:h-80 md:h-[450px] lg:h-[550px] w-full rounded-3xl object-cover shadow-xl"
             />
           </div>
         </div>
       </section>
 
       {/* SEARCH BAR */}
-      <section className="mx-auto max-w-5xl px-6">
+      <section className="mx-auto max-w-5xl px-4 sm:px-6">
         <div className="rounded-3xl bg-white p-4 shadow-lg">
           <form onSubmit={handleSearch} className="grid gap-4 md:grid-cols-4">
             <input
@@ -169,7 +169,7 @@ export default function HomePage() {
 
       {/* CATEGORIES */}
       <section className="mx-auto max-w-7xl px-6 py-20">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="text-3xl font-bold text-slate-900">
             Browse By Category
           </h2>
@@ -209,7 +209,7 @@ export default function HomePage() {
       <section className="bg-white py-20">
         <div className="mx-auto max-w-7xl px-6">
 
-          <h2 className="text-center text-4xl font-bold text-slate-900">
+          <h2 className="text-center text-3xl md:text-4xl font-bold text-slate-900">
             Why Students Choose StayMate
           </h2>
 
@@ -252,7 +252,7 @@ export default function HomePage() {
       {/* CTA */}
       <section className="bg-blue-600 py-20">
         <div className="mx-auto max-w-5xl px-6 text-center">
-          <h2 className="text-4xl font-bold text-white">
+          <h2 className="text-3xl md:text-4xl font-bold text-white">
             Ready to Find Your Next Stay?
           </h2>
 

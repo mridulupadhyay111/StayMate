@@ -1,6 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  overflow-x: hidden;
+  width: 100%;
+}
 
 :root {
   color-scheme: dark;
@@ -20,4 +30,14 @@ textarea {
 input::placeholder,
 textarea::placeholder {
   color: rgba(148, 163, 184, 1);
+}
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  overflow-x: hidden;
 }
